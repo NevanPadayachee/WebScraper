@@ -64,7 +64,7 @@ def dollar_to_rand():
             print("failed Attempt ")
 
 
-list = amazon_price("1050 ti")
+list = amazon_price("ryzen 3700")
 
 for items in list :
     print(items)
