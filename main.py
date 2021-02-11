@@ -1,10 +1,9 @@
 from bs4 import BeautifulSoup as bs
 from selenium import webdriver
-import requests
 import csv
 
 
-def get_url(search_term):
+def get_amazon_url(search_term):
     temp = "https://www.amazon.com/s?k={}&ref=nb_sb_noss"
     search_term = search_term.replace(' ', '+')
     return temp.format(search_term)
@@ -12,8 +11,7 @@ def get_url(search_term):
 
 def amazon_price(item):
     driver = webdriver.Chrome()
-    temp = get_url(item)
-    print(temp)
+    temp = get_amazon_url(item)
 
     driver.get(temp)
     soup = bs(driver.page_source, 'html.parser')
@@ -46,7 +44,6 @@ def amazon_list(item):
         return
 
 
-
 def dollar_to_rand():
     test = True
     count = 0
@@ -72,4 +69,9 @@ list = amazon_price("1050 ti")
 for items in list :
     print(items)
 
-#print(dollar_to_rand())
+with open("amazon.csv", 'w', newline='', encoding='utf-8') as f:
+    writer = csv.writer(f)
+    writer.writerow(['Description', 'Price', 'Rating', 'URL'])
+    writer.writerows(list)
+
+

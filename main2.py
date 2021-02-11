@@ -1,16 +1,19 @@
 from bs4 import BeautifulSoup as bs
-import requests
+from selenium import webdriver
 
-def get_url(search_term):
-    temp = "https://www.amazon.com/s?k={}&ref=nb_sb_noss"
-    search_term = search_term.replace(' ', '+')
+def get_takealot_url(search_term):
+    temp = "https://www.takealot.com/all?_sb=1&_r=1&_si=34561dea791c4dd754020d0411807e90&qsearch={}"
+    search_term = search_term.replace(' ','%20')
     return temp.format(search_term)
 
-headers = {"User-Agent":'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.150 Safari/537.36'}
+def takealot_prices(item):
+    driver = webdriver.Chrome()
+    temp = get_takealot_url(item)
+    driver.get(temp)
 
-url = "https://www.amazon.com/Acer-SB220Q-Ultra-Thin-Frame-Monitor/dp/B07CVL2D2S/ref=sr_1_3?dchild=1&keywords=monitor&qid=1613041666&sr=8-3"
-page = requests.get(url, headers=headers)
+    soup = bs(driver.page_source, 'html.parser')
+    results = soup.findAll('div', {'class': 'cell small-4'})
+    return results
 
-soup = bs(page.content, 'html.parser')
 
-print(soup.prettify())
+print(takealot_prices("monitors"))
