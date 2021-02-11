@@ -22,7 +22,9 @@ def amazon_price(item):
 
     item_list = []
     for items in results:
-        item_list.append(amazon_list(items))
+        record = amazon_list(items)
+        if record:
+            item_list.append(record)
 
     return item_list
 
@@ -40,8 +42,9 @@ def amazon_list(item):
 
         results = (description, price.text, rating, temp)
         return results
-    except:
-        return "item not available in region"
+    except :
+        return
+
 
 
 def dollar_to_rand():
@@ -64,9 +67,9 @@ def dollar_to_rand():
             print("failed Attempt ")
 
 
-list = amazon_price("ryzen 3600")
+list = amazon_price("1050 ti")
 
 for items in list :
-    print(items[1])
+    print(items)
 
 #print(dollar_to_rand())
