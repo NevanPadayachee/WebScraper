@@ -1,25 +1,16 @@
 from bs4 import BeautifulSoup as bs
-from selenium import webdriver
 import requests
-import csv
 
-def dollar_to_rand():
-    test = True
-    count = 0
-    while(test):
-        try:
-            temp = "https://www.xe.com/currencyconverter/convert/?Amount=1&From=USD&To=ZAR"
-            driver = webdriver.Chrome()
-            driver.get(temp)
-            soup = bs(driver.page_source, 'html.parser')
-            results = soup.find('p', {'class': 'sc-AxjAm ConvertedSubText-fcQdYJ efOulh'})
-            return results.text.split()
-        except:
-            test = True
-            count = count + 1
-            if count == 4:
-                test = False
-            print("failed Attempt ")
+def get_url(search_term):
+    temp = "https://www.amazon.com/s?k={}&ref=nb_sb_noss"
+    search_term = search_term.replace(' ', '+')
+    return temp.format(search_term)
 
+headers = {"User-Agent":'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.150 Safari/537.36'}
 
-print(dollar_to_rand()[0])
+url = "https://www.amazon.com/Acer-SB220Q-Ultra-Thin-Frame-Monitor/dp/B07CVL2D2S/ref=sr_1_3?dchild=1&keywords=monitor&qid=1613041666&sr=8-3"
+page = requests.get(url, headers=headers)
+
+soup = bs(page.content, 'html.parser')
+
+print(soup.prettify())
